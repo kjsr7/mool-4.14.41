@@ -104,6 +104,9 @@ modname_flags  = $(if $(filter 1,$(words $(modname))),\
 
 orig_c_flags   = $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) $(KBUILD_SUBDIR_CCFLAGS) \
                  $(ccflags-y) $(CFLAGS_$(basetarget).o)
+           
+_cxx_flags     = $(KBUILD_CXXFLAGS) $(EXTRA_CXXFLAGS) $(KBUILD_CXXFLAGS_$(*F).o) $(KBUILD_CXXFLAGS_$(basetarget).o)
+
 _c_flags       = $(filter-out $(CFLAGS_REMOVE_$(basetarget).o), $(orig_c_flags))
 orig_a_flags   = $(KBUILD_CPPFLAGS) $(KBUILD_AFLAGS) $(KBUILD_SUBDIR_ASFLAGS) \
                  $(asflags-y) $(AFLAGS_$(basetarget).o)
@@ -157,14 +160,22 @@ else
 #   and locates generated .h files
 # FIXME: Replace both with specific CFLAGS* statements in the makefiles
 __c_flags	= $(if $(obj),$(call addtree,-I$(src)) -I$(obj)) \
-		  $(call flags,_c_flags)
+                  $(call flags,_c_flags)
+__cxx_flags     = $(call addtree,-I$(obj)) $(call flags,_cxx_flags)
+
+           
 __a_flags	= $(call flags,_a_flags)
 __cpp_flags     = $(call flags,_cpp_flags)
 endif
 
 c_flags        = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(LINUXINCLUDE)     \
 		 $(__c_flags) $(modkern_cflags)                           \
-		 $(basename_flags) $(modname_flags)
+                 $(basename_flags) $(modname_flags)
+cxx_flags      = -Wp,-MD,$(depfile) $(NOSTDINCXX_FLAGS) $(KBUILD_CPPFLAGS) \
+     $(__cxx_flags) $(modkern_cflags) \
+     $(basename_flags) $(modname_flags)
+
+
 
 a_flags        = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(LINUXINCLUDE)     \
 		 $(__a_flags) $(modkern_aflags)
@@ -182,7 +193,7 @@ dtc_cpp_flags  = -Wp,-MD,$(depfile).pre.tmp -nostdinc                    \
 
 # Finds the multi-part object the current object will be linked into
 modname-multi = $(sort $(foreach m,$(multi-used),\
-		$(if $(filter $(subst $(obj)/,,$*.o), $($(m:.o=-objs)) $($(m:.o=-y))),$(m:.o=))))
+$(if $(filter $(subst $(obj)/,,$*.o), $($(m:.o=-objs)) $($(m:.o=-y))),$(m:.o=))))
 
 # Useful for describing the dependency of composite objects
 # Usage:

@@ -153,6 +153,10 @@ cmd_cc_s_c       = $(CC) $(c_flags) $(DISABLE_LTO) -fverbose-asm -S -o $@ $<
 
 $(obj)/%.s: $(src)/%.c FORCE
 	$(call if_changed_dep,cc_s_c)
+$(obj)/%.s: $(src)/%.cc FORCE
+	$(call if_changed_dep,cxx_s_c)
+
+
 
 quiet_cmd_cpp_i_c = CPP $(quiet_modtag) $@
 cmd_cpp_i_c       = $(CPP) $(c_flags) -o $@ $<
@@ -191,9 +195,13 @@ $(obj)/%.ll: $(src)/%.c FORCE
 # (See cmd_cc_o_c + relevant part of rule_cc_o_c)
 
 quiet_cmd_cc_o_c = CC $(quiet_modtag)  $@
+quiet_cmd_cxx_o_cc = CXX $(quiet_modtag) $@
+
 
 ifndef CONFIG_MODVERSIONS
 cmd_cc_o_c = $(CC) $(c_flags) -c -o $@ $<
+cmd_cxx_o_cc = $(CXX) $(cxx_flags) -c -o $@ $<
+
 
 else
 # When module versioning is enabled the following steps are executed:
@@ -210,17 +218,23 @@ else
 
 cmd_cc_o_c = $(CC) $(c_flags) -c -o $(@D)/.tmp_$(@F) $<
 
-cmd_modversions_c =								\
-	if $(OBJDUMP) -h $(@D)/.tmp_$(@F) | grep -q __ksymtab; then		\
-		$(call cmd_gensymtypes_c,$(KBUILD_SYMTYPES),$(@:.o=.symtypes))	\
-		    > $(@D)/.tmp_$(@F:.o=.ver);					\
-										\
-		$(LD) $(LDFLAGS) -r -o $@ $(@D)/.tmp_$(@F) 			\
-			-T $(@D)/.tmp_$(@F:.o=.ver);				\
-		rm -f $(@D)/.tmp_$(@F) $(@D)/.tmp_$(@F:.o=.ver);		\
-	else									\
-		mv -f $(@D)/.tmp_$(@F) $@;					\
-	fi;
+cmd_cxx_o_cc = $(CXX) $(cxx_flags) -c -o $(@D)/.tmp_$(@F) $<
+
+
+cmd_modversions =                                                               \
+        if $(OBJDUMP) -h $(@D)/.tmp_$(@F) | grep -q __ksymtab; then             \
+	$(CPP) -D__GENKSYMS__ $(c_flags) $<                     \
+                | $(GENKSYMS) $(if $(KBUILD_SYMTYPES), -T $(@D)/$(@F:.o=.symtypes)) \
+                > $(@D)/.tmp_$(@F:.o=.ver);                             \
+                                                                        \
+                $(LD) $(LDFLAGS) -r -o $@ $(@D)/.tmp_$(@F)              \
+                        -T $(@D)/.tmp_$(@F:.o=.ver);                    \
+                rm -f $(@D)/.tmp_$(@F) $(@D)/.tmp_$(@F:.o=.ver);        \
+        else                                                            \
+                mv -f $(@D)/.tmp_$(@F) $@;                              \
+        fi;
+
+
 endif
 
 ifdef CONFIG_FTRACE_MCOUNT_RECORD
@@ -310,6 +324,15 @@ define rule_cc_o_c
 	$(call echo-cmd,record_mcount) $(cmd_record_mcount)
 endef
 
+define rule_cxx_o_cc
+	$(call echo-cmd,checksrc) $(cmd_checksrc)			  \
+	$(call cmd_and_fixdep,cxx_o_cc)					  \
+	$(call echo-cmd,objtool) $(cmd_objtool)				  \
+	$(cmd_modversions_cxx)						  \
+	$(call echo-cmd,record_mcount) $(cmd_record_mcount)
+endef
+
+
 define rule_as_o_S
 	$(call cmd_and_fixdep,as_o_S)					  \
 	$(call echo-cmd,objtool) $(cmd_objtool)				  \
@@ -327,6 +350,12 @@ endif
 $(obj)/%.o: $(src)/%.c $(recordmcount_source) $(objtool_dep) FORCE
 	$(call cmd,force_checksrc)
 	$(call if_changed_rule,cc_o_c)
+$(obj)/%.o: $(src)/%.cc $(recordmcount_source) FORCE
+	$(call cmd,force_checksrc)
+	$(call if_changed_rule,cxx_o_cc)
+
+
+
 
 # Single-part modules are special since we need to mark them in $(MODVERDIR)
 
@@ -340,6 +369,15 @@ quiet_cmd_cc_lst_c = MKLST   $@
       cmd_cc_lst_c = $(CC) $(c_flags) -g -c -o $*.o $< && \
 		     $(CONFIG_SHELL) $(srctree)/scripts/makelst $*.o \
 				     System.map $(OBJDUMP) > $@
+quiet_cmd_cxx_lst_cc = MKLST   $@
+	cmd_cxx_lst_cc = $(CXX) $(cxx_flags) -g -c -o $*.o $< && \
+	$(CONFIG_SHELL) $(srctree)/scripts/makelst $*.o \
+	System.map $(OBJDUMP) > $@
+
+$(obj)/%.lst: $(src)/%.cc FORCE
+	$(call if_changed_dep,cxx_lst_cc)
+
+
 
 $(obj)/%.lst: $(src)/%.c FORCE
 	$(call if_changed_dep,cc_lst_c)
@@ -564,7 +602,12 @@ else
 endif
 
 quiet_cmd_link_multi-m = LD [M]  $@
-cmd_link_multi-m = $(cmd_link_multi-link)
+#cmd_link_multi-m = $(cmd_link_multi-link)
+cmd_link_multi-m =  $(LD) $(ld_flags) $(LDFLAGS_MODULE) -o $@ \
+        $(crtbeginM.o) $(link_multi_deps) $(crtendM.o)
+#$(cmd_link_multi-y)
+
+
 
 $(multi-used-y): FORCE
 	$(call if_changed,link_multi-y)
