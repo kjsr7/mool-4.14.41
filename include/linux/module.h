@@ -280,6 +280,15 @@ enum module_state {
 	MODULE_STATE_GOING,	/* Going away. */
 	MODULE_STATE_UNFORMED,	/* Still setting it up. */
 };
+#ifdef CONFIG_CXX_RUNTIME
+struct weak_symbol
+{
+        unsigned long value;
+     char *name;
+     struct weak_symbol* next;
+};
+#endif
+
 
 struct mod_tree_node {
 	struct module *mod;
@@ -420,6 +429,11 @@ struct module {
 	/* The command line arguments (may be mangled).  People like
 	   keeping pointers to this stuff */
 	char *args;
+#ifdef CONFIG_CXX_RUNTIME
+       //weak symbols
+       struct weak_symbol* weak_symbols;
+#endif
+
 
 #ifdef CONFIG_SMP
 	/* Per-cpu data. */
