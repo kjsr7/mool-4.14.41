@@ -373,9 +373,9 @@ SECTIONS
 
 	/* Sections to be discarded */
 	DISCARDS
-	/DISCARD/ : {
+/*	/DISCARD/ : {
 		*(.eh_frame)
-	}
+	}*/
 }
 
 

@@ -8,6 +8,15 @@
 
 #ifdef __KERNEL__
 
+#ifdef __cplusplus
+#define notrace
+#else
+#define notrace __attribute__((no_instrument_function))
+#endif
+
+
+
+
 /*
  * Note: DISABLE_BRANCH_PROFILING can be used by special lowlevel code
  * to disable branch tracing on a per file basis.

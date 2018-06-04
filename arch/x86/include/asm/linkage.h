@@ -3,9 +3,13 @@
 #define _ASM_X86_LINKAGE_H
 
 #include <linux/stringify.h>
-
+#ifdef __cplusplus
 #undef notrace
-#define notrace __attribute__((no_instrument_function))
+#define notrace
+#else
+ #undef notrace
+ #define notrace __attribute__((no_instrument_function))
+#endif
 
 #ifdef CONFIG_X86_32
 #define asmlinkage CPP_ASMLINKAGE __attribute__((regparm(0)))

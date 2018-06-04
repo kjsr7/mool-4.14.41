@@ -100,9 +100,11 @@ vmlinux_link()
 			objects="--whole-archive			\
 				built-in.o				\
 				--no-whole-archive			\
+				lib/gcc/crtbegin.o			\
 				--start-group				\
 				${KBUILD_VMLINUX_LIBS}			\
 				--end-group				\
+				lib/gcc/crtend.o			\
 				${1}"
 		else
 			objects="${KBUILD_VMLINUX_INIT}			\

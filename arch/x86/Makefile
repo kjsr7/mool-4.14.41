@@ -71,6 +71,11 @@ ifeq ($(CONFIG_X86_32),y)
         KBUILD_CFLAGS += $(biarch)
 
         KBUILD_CFLAGS += -msoft-float -mregparm=3 -freg-struct-return
+	NOSTDINCXX_FLAGS += -pipe -msoft-float
+
+        # Don't autogenerate MMX or SSE instructions
+        KBUILD_CFLAGS += -mno-mmx -mno-sse
+
 
         # Never want PIC in a 32-bit kernel, prevent breakage with GCC built
         # with nonstandard options
@@ -80,11 +85,14 @@ ifeq ($(CONFIG_X86_32),y)
         # alignment of 16 bytes. This reduces stack usage and the number of
         # alignment instructions.
         KBUILD_CFLAGS += $(call cc-option,$(cc_stack_align4))
+	NOSTDINCXX_FLAGS += $(call cc-option,$(cc_stack_align4))
 
         # Disable unit-at-a-time mode on pre-gcc-4.0 compilers, it makes gcc use
         # a lot more stack due to the lack of sharing of stacklots:
         KBUILD_CFLAGS += $(call cc-ifversion, -lt, 0400, \
-				$(call cc-option,-fno-unit-at-a-time))
+				$(call icc-option,-fno-unit-at-a-time))
+	NOSTDINCXX_FLAGS += $(shell if [ $(call cc-version) -lt 0400 ] ; then echo $(call cc-option,-fno-unit-at-a-time); fi ;)
+
 
         # CPU-specific tuning. Anything which can be shared with UML should go here.
         include arch/x86/Makefile_32.cpu
@@ -133,6 +141,7 @@ else
 		$(call cc-option,-mtune=atom,$(call cc-option,-mtune=generic))
         cflags-$(CONFIG_GENERIC_CPU) += $(call cc-option,-mtune=generic)
         KBUILD_CFLAGS += $(cflags-y)
+        NOSTDINCXX_FLAGS += $(cflags-y)
 
         KBUILD_CFLAGS += -mno-red-zone
         KBUILD_CFLAGS += -mcmodel=kernel
@@ -245,7 +254,7 @@ ifneq ($(RETPOLINE_CFLAGS),)
   KBUILD_CFLAGS += $(RETPOLINE_CFLAGS) -DRETPOLINE
 endif
 endif
-
+CXXFLAGS += $(mflags-y)
 archscripts: scripts_basic
 	$(Q)$(MAKE) $(build)=arch/x86/tools relocs
 
