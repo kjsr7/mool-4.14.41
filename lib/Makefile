@@ -170,7 +170,7 @@ obj-$(CONFIG_CPU_RMAP) += cpu_rmap.o
 
 obj-$(CONFIG_CXX_RUNTIME) += cxa_atexit.o
 obj-$(CONFIG_CXX_RUNTIME) += gcc/
-#obj-$(CONFIG_CXX_RUNTIME) += libstdc++-v3/
+obj-$(CONFIG_CXX_RUNTIME) += libstdc++-v3/
 
 
 obj-$(CONFIG_CORDIC) += cordic.o
