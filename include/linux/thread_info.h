@@ -43,11 +43,23 @@ enum {
 #define THREAD_ALIGN	THREAD_SIZE
 #endif
 
-#if IS_ENABLED(CONFIG_DEBUG_STACK_USAGE) || IS_ENABLED(CONFIG_DEBUG_KMEMLEAK)
+#ifdef CONFIG_DEBUG_STACK_USAGE 
 # define THREADINFO_GFP		(GFP_KERNEL_ACCOUNT | __GFP_ZERO)
 #else
 # define THREADINFO_GFP		(GFP_KERNEL_ACCOUNT)
 #endif
+
+#ifdef CONFIG_DEBUG_KMEMLEAK
+#ifndef THREADINFO_GFP         (GFP_KERNEL_ACCOUNT | __GFP_ZERO)
+# define THREADINFO_GFP         (GFP_KERNEL_ACCOUNT | __GFP_ZERO)
+#endif
+#else
+# define THREADINFO_GFP         (GFP_KERNEL_ACCOUNT)
+
+
+#endif
+
+
 
 /*
  * flag set/clear/test wrappers

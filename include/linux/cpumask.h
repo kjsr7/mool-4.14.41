@@ -167,8 +167,8 @@ static inline unsigned int cpumask_local_spread(unsigned int i, int node)
 	for ((cpu) = 0; (cpu) < 1; (cpu)++, (void)mask)
 #define for_each_cpu_wrap(cpu, mask, start)	\
 	for ((cpu) = 0; (cpu) < 1; (cpu)++, (void)mask, (void)(start))
-#define for_each_cpu_and(cpu, mask, and)	\
-	for ((cpu) = 0; (cpu) < 1; (cpu)++, (void)mask, (void)and)
+#define for_each_cpu_and(cpu, mask, and_id)	\
+	for ((cpu) = 0; (cpu) < 1; (cpu)++, (void)mask, (void)and_id)
 #else
 /**
  * cpumask_first - get the first cpu in a cpumask
@@ -257,9 +257,9 @@ extern int cpumask_next_wrap(int n, const struct cpumask *mask, int start, bool 
  *
  * After the loop, cpu is >= nr_cpu_ids.
  */
-#define for_each_cpu_and(cpu, mask, and)				\
+#define for_each_cpu_and(cpu, mask, and_var)				\
 	for ((cpu) = -1;						\
-		(cpu) = cpumask_next_and((cpu), (mask), (and)),		\
+		(cpu) = cpumask_next_and((cpu), (mask), (and_var)),		\
 		(cpu) < nr_cpu_ids;)
 #endif /* SMP */
 
