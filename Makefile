@@ -441,7 +441,7 @@ KBUILD_CXXFLAGS := -g -fno-strict-aliasing -fno-common \
 		   -fno-stack-protector -fno-tree-scev-cprop \
 		   -nostdinc++ -fexceptions -frtti -fno-strict-aliasing \
                    -fno-common -fpermissive  -fno-tree-scev-cprop  \
-	           -D_cplusplus=1
+	           -D__cplusplus=1
 
 
 KBUILD_AFLAGS_MODULE  := -DMODULE
