@@ -11,6 +11,7 @@
 #include <linux/types.h>
 #include <linux/bug.h>
 #include <linux/restart_block.h>
+#include <linux/kconfig.h>
 
 #ifdef CONFIG_THREAD_INFO_IN_TASK
 /*
@@ -43,23 +44,11 @@ enum {
 #define THREAD_ALIGN	THREAD_SIZE
 #endif
 
-#ifdef CONFIG_DEBUG_STACK_USAGE 
+#if IS_ENABLED(CONFIG_DEBUG_STACK_USAGE) || IS_ENABLED(CONFIG_DEBUG_KMEMLEAK)
 # define THREADINFO_GFP		(GFP_KERNEL_ACCOUNT | __GFP_ZERO)
 #else
 # define THREADINFO_GFP		(GFP_KERNEL_ACCOUNT)
 #endif
-
-#ifdef CONFIG_DEBUG_KMEMLEAK
-#ifndef THREADINFO_GFP         (GFP_KERNEL_ACCOUNT | __GFP_ZERO)
-# define THREADINFO_GFP         (GFP_KERNEL_ACCOUNT | __GFP_ZERO)
-#endif
-#else
-# define THREADINFO_GFP         (GFP_KERNEL_ACCOUNT)
-
-
-#endif
-
-
 
 /*
  * flag set/clear/test wrappers
