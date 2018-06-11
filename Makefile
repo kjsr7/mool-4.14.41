@@ -430,7 +430,6 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
 		   -fno-delete-null-pointer-checks -g
-		   
 KBUILD_CXXFLAGS := -g -fno-strict-aliasing -fno-common \
  		   -fpermissive -w -ffreestanding \
 		   -nostdinc -fno-strict-aliasing -fno-common \
@@ -440,8 +439,8 @@ KBUILD_CXXFLAGS := -g -fno-strict-aliasing -fno-common \
 		   -maccumulate-outgoing-args -fomit-frame-pointer \
 		   -fno-stack-protector -fno-tree-scev-cprop \
 		   -nostdinc++ -fexceptions -frtti -fno-strict-aliasing \
-                   -fno-common -fpermissive  -fno-tree-scev-cprop  \
-	           -D__cplusplus=1
+                   -fno-common -fpermissive  -fno-tree-scev-cprop \
+
 
 
 KBUILD_AFLAGS_MODULE  := -DMODULE
