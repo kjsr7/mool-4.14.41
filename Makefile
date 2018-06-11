@@ -421,11 +421,7 @@ LINUXINCLUDE    := \
 		$(USERINCLUDE)
 
 KBUILD_AFLAGS   := -D__ASSEMBLY__
-KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-		   -fno-strict-aliasing -fno-common -fshort-wchar \
-		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
-		   -std=gnu89
+
 KBUILD_CPPFLAGS := -D__KERNEL__
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
@@ -433,8 +429,8 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
-		   -fno-delete-null-pointer-checks \
-		   -lstdc++
+		   -fno-delete-null-pointer-checks -g
+		   
 KBUILD_CXXFLAGS := -g -fno-strict-aliasing -fno-common \
  		   -fpermissive -w -ffreestanding \
 		   -nostdinc -fno-strict-aliasing -fno-common \
@@ -444,7 +440,8 @@ KBUILD_CXXFLAGS := -g -fno-strict-aliasing -fno-common \
 		   -maccumulate-outgoing-args -fomit-frame-pointer \
 		   -fno-stack-protector -fno-tree-scev-cprop \
 		   -nostdinc++ -fexceptions -frtti -fno-strict-aliasing \
-                   -fno-common -fpermissive  -fno-tree-scev-cprop
+                   -fno-common -fpermissive  -fno-tree-scev-cprop  \
+	           -D_cplusplus=1
 
 
 KBUILD_AFLAGS_MODULE  := -DMODULE
