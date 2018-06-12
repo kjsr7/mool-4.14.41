@@ -393,7 +393,16 @@ extern bool ____wrong_branch_error(void);
 
 #define static_branch_unlikely(x)						\
 ({										\
-	bool branch;								\
+	bool branch;
+        ifndef __cplusplus								\
+	if (__builtin_types_compatible_p(typeof(*x), struct static_key_true))	\
+		branch = arch_static_branch_jump(&(x)->key, false);		\
+	else if (__builtin_types_compatible_p(typeof(*x), struct static_key_false)) \
+		branch = arch_static_branch(&(x)->key, false);			\
+	else									\
+		branch = ____wrong_branch_error();				\
+	branch;	
+        else									\
 	if (__builtin_types_compatible_p(typeof(*x), struct static_key_true))	\
 		branch = arch_static_branch_jump(&(x)->key, false);		\
 	else if (__builtin_types_compatible_p(typeof(*x), struct static_key_false)) \
@@ -401,6 +410,7 @@ extern bool ____wrong_branch_error(void);
 	else									\
 		branch = ____wrong_branch_error();				\
 	branch;									\
+        									
 })
 
 #else /* !HAVE_JUMP_LABEL */
