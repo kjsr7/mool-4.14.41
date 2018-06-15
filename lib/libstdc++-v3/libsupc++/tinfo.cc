@@ -132,7 +132,7 @@ adjust_pointer (const void *base, ptrdiff_t offset)
 
 // ADDR is a pointer to an object.  Convert it to a pointer to a base,
 // using OFFSET. IS_VIRTUAL is true, if we are getting a virtual base.
-inline void const *
+void const *
 convert_to_base (void const *addr, bool is_virtual, ptrdiff_t offset)
 {
   if (is_virtual)
@@ -146,29 +146,29 @@ convert_to_base (void const *addr, bool is_virtual, ptrdiff_t offset)
 }
 
 // some predicate functions for __class_type_info::__sub_kind
-inline bool contained_p (__class_type_info::__sub_kind access_path)
+bool contained_p (__class_type_info::__sub_kind access_path)
 {
   return access_path >= __class_type_info::__contained_mask;
 }
-inline bool public_p (__class_type_info::__sub_kind access_path)
+bool public_p (__class_type_info::__sub_kind access_path)
 {
   return access_path & __class_type_info::__contained_public_mask;
 }
-inline bool virtual_p (__class_type_info::__sub_kind access_path)
+bool virtual_p (__class_type_info::__sub_kind access_path)
 {
   return (access_path & __class_type_info::__contained_virtual_mask);
 }
-inline bool contained_public_p (__class_type_info::__sub_kind access_path)
+bool contained_public_p (__class_type_info::__sub_kind access_path)
 {
   return ((access_path & __class_type_info::__contained_public)
           == __class_type_info::__contained_public);
 }
-inline bool contained_nonpublic_p (__class_type_info::__sub_kind access_path)
+bool contained_nonpublic_p (__class_type_info::__sub_kind access_path)
 {
   return ((access_path & __class_type_info::__contained_public)
           == __class_type_info::__contained_mask);
 }
-inline bool contained_nonvirtual_p (__class_type_info::__sub_kind access_path)
+contained_nonvirtual_p (__class_type_info::__sub_kind access_path)
 {
   return ((access_path & (__class_type_info::__contained_mask
                           | __class_type_info::__contained_virtual_mask))
@@ -256,7 +256,7 @@ __do_upcast (const __class_type_info *dst_type,
   return true;
 }
 
-inline __class_type_info::__sub_kind __class_type_info::
+__class_type_info::__sub_kind __class_type_info::
 __find_public_src (ptrdiff_t src2dst,
                    const void *obj_ptr,
                    const __class_type_info *src_type,

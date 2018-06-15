@@ -131,7 +131,7 @@ __do_catch (const type_info *thr_type,
   return __pointer_catch (thrown_type, thr_obj, outer);
 }
 
-inline bool __pbase_type_info::
+bool __pbase_type_info::
 __pointer_catch (const __pbase_type_info *thrown_type,
                  void **thr_obj,
                  unsigned outer) const

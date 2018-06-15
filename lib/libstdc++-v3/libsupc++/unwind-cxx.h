@@ -153,14 +153,14 @@ extern "C" _Unwind_Reason_Code __gxx_personality_sj0
       struct _Unwind_Exception *, struct _Unwind_Context *);
 
 // Acquire the C++ exception header from the C++ object.
-static inline __cxa_exception *
+static  __cxa_exception *
 __get_exception_header_from_obj (void *ptr)
 {
   return reinterpret_cast<__cxa_exception *>(ptr) - 1;
 }
 
 // Acquire the C++ exception header from the generic exception header.
-static inline __cxa_exception *
+static __cxa_exception *
 __get_exception_header_from_ue (_Unwind_Exception *exc)
 {
   return reinterpret_cast<__cxa_exception *>(exc + 1) - 1;

@@ -163,7 +163,7 @@ _Unwind_RaiseException_Phase2(struct _Unwind_Exception *exc,
  static inline  _Unwind_Reason_Code
 _Unwind_RaiseException_In_One_Phase(struct _Unwind_Exception *exc) __attribute__ ((always_inline));
  
-static inline  _Unwind_Reason_Code
+static  _Unwind_Reason_Code
 _Unwind_RaiseException_In_One_Phase(struct _Unwind_Exception *exc)  
 {
 //	 
