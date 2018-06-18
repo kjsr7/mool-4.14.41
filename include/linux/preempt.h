@@ -29,6 +29,7 @@
  *             NMI_MASK:	0x00100000
  * PREEMPT_NEED_RESCHED:	0x80000000
  */
+#define tif_need_resched() test_thread_flag(TIF_NEED_RESCHED)
 #define PREEMPT_BITS	8
 #define SOFTIRQ_BITS	8
 #define HARDIRQ_BITS	4

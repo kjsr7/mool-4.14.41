@@ -24,7 +24,9 @@
 
 #include <asm/irqdomain.h>
 #include <asm/hw_irq.h>
+#include <linux/irq.h>
 #include <asm/io_apic.h>
+#include <linux/irq.h>
 
 struct msi_msg;
 struct irq_alloc_info;

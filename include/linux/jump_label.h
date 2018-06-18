@@ -394,9 +394,9 @@ extern bool ____wrong_branch_error(void);
 #define static_branch_unlikely(x)						\
 ({										\
 	bool branch;								\
-	if (sizeof(*x) == sizeof(struct static_key_true))	\
+	if (__builtin_types_compatible_p(typeof(*x), struct static_key_true))	\
 		branch = arch_static_branch_jump(&(x)->key, false);		\
-	else if (sizeof(*x) == sizeof(struct static_key_false)) \
+	else if (__builtin_types_compatible_p(typeof(*x), struct static_key_false)) \
 		branch = arch_static_branch(&(x)->key, false);			\
 	else									\
 		branch = ____wrong_branch_error();				\

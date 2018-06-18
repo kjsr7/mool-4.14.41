@@ -547,10 +547,7 @@
 			KEEP(*(.init_array))		   \
 			VMLINUX_SYMBOL(__ctors_end) = .;
 #else
-#define KERNEL_CTORS() VMLINUX_SYMBOL(__ctors_start) = .; \
-	               *(.ctors)			  \
-		       VMLINUX_SYMBOL(__ctors_end) = .;
-
+#define KERNEL_CTORS()
 #endif
 
 /* init and exit section handling */

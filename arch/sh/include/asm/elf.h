@@ -195,7 +195,9 @@ extern int arch_setup_additional_pages(struct linux_binprm *bprm,
 				       int uses_interp);
 
 extern unsigned int vdso_enabled;
+#ifndef __cplusplus
 extern void __kernel_vsyscall;
+#endif
 
 #define VDSO_BASE		((unsigned long)current->mm->context.vdso)
 #define VDSO_SYM(x)		(VDSO_BASE + (unsigned long)(x))

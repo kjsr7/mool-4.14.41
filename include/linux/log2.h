@@ -14,7 +14,6 @@
 
 #include <linux/types.h>
 #include <linux/bitops.h>
-
 /*
  * non-constant log of base 2 calculators
  * - the arch may override these in asm/bitops.h if they can be implemented

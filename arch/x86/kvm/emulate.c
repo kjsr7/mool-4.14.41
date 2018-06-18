@@ -2157,7 +2157,7 @@ static int emulate_iret_real(struct x86_emulate_ctxt *ctxt)
 	}
 
 	ctxt->eflags &= ~EFLG_RESERVED_ZEROS_MASK; /* Clear reserved zeros */
-	ctxt->eflags |= X86_EFLAGS_FIXED;
+	ctxt->eflags |= X86_EFLAGS_BIT1;
 	ctxt->ops->set_nmi_mask(ctxt, false);
 
 	return rc;

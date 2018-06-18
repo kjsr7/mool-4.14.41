@@ -790,7 +790,12 @@ endif
 
 ifdef CONFIG_CXX_RUNTIME
 KBUILD_CXXFLAGS  += -Iinclude2 -I$(srctree)/include/c++ -I$(objtree)/include/c++ \
-	-fexceptions -frtti 
+	-fexceptions -frtti -I$(srctree)/arch/$(hdr-arch)/include \
+                -I$(objtree)/arch/$(hdr-arch)/include/generated \
+                $(if $(KBUILD_SRC), -I$(srctree)/include) \
+                -I$(objtree)/include \
+                $(USERINCLUDE)
+ 
 #KBUILD_CFLAGS += -lstdc++
 #HOSTCFLAGS += -lstdc++
 else
