@@ -76,7 +76,7 @@ SECTIONS
     *(.gnu.linkonce.d*)
     CONSTRUCTORS
   }
-  .data1   : { *(.data1) }
+//  .data1   : { *(.data1) }
   .ctors         :
   {
     *(.ctors)

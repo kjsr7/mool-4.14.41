@@ -112,12 +112,13 @@ SECTIONS
     *(.data.* .gnu.linkonce.d.*)
     SORT(CONSTRUCTORS)
   }
-  .data1          : { *(.data1) }
+//  .data1          : { *(.data1) }
   .tdata	  : { *(.tdata .tdata.* .gnu.linkonce.td.*) }
   .tbss		  : { *(.tbss .tbss.* .gnu.linkonce.tb.*) *(.tcommon) }
   .eh_frame       : { KEEP (*(.eh_frame)) }
   .gcc_except_table   : { *(.gcc_except_table) }
   .dynamic        : { *(.dynamic) }
+  .;
   .ctors          : {
     /* gcc uses crtbegin.o to find the start of
        the constructors, so we make sure it is
@@ -134,7 +135,8 @@ SECTIONS
        The .ctor section from the crtend file contains the
        end of ctors marker and it must be last */
     KEEP (*(EXCLUDE_FILE (*crtend.o ) .ctors))
-    KEEP (*(SORT(.ctors.*)))
+   // KEEP (*(SORT(.ctors.*)))
+    KEEP (*(SORT(ctors.*)))
     KEEP (*(.ctors))
   }
   .dtors          : {
