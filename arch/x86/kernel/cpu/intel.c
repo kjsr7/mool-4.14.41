@@ -19,7 +19,6 @@
 #include <asm/microcode_intel.h>
 #include <asm/hwcap2.h>
 #include <asm/elf.h>
-#include <asm/msr-index.h>
 
 #ifdef CONFIG_X86_64
 #include <linux/topology.h>

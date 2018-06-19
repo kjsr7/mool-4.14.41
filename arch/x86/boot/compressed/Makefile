@@ -108,7 +108,7 @@ $(obj)/vmlinux: $(vmlinux-objs-y) FORCE
 	$(call if_changed,check_data_rel)
 	$(call if_changed,ld)
 
-OBJCOPYFLAGS_vmlinux.bin :=  -R .comment -S -O binary
+OBJCOPYFLAGS_vmlinux.bin :=  -R .comment -S
 $(obj)/vmlinux.bin: vmlinux FORCE
 	$(call if_changed,objcopy)
 
