@@ -374,7 +374,7 @@ static inline void rcu_preempt_sleep_check(void) { }
 ({ \
 	/* Dependency order vs. p above. */ \
 	typeof(p) ________p1 = READ_ONCE(p); \
-	((typeof(*p) __force __kernel *)(________p1)); \
+	((TYPEOF(p) __force __kernel )(________p1)); \
 })
 
 /**
