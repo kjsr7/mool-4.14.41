@@ -7,6 +7,7 @@
 
 #include <c++/begin_include.h>
 #include <linux/kernel.h>
+#include <linux/module.h>
 #include <c++/end_include.h>
 
 
