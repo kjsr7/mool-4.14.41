@@ -7,7 +7,7 @@
 #include <linux/poison.h>
 #include <linux/const.h>
 #include <linux/kernel.h>
-#include <linux/compiler.h>
+
 
 /*
  * Simple doubly linked list implementation.

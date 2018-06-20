@@ -11,7 +11,7 @@
 #include <linux/types.h>
 #include <linux/bug.h>
 #include <linux/restart_block.h>
-#include <linux/kconfig.h>
+//#include <linux/kconfig.h>
 
 #ifdef CONFIG_THREAD_INFO_IN_TASK
 /*

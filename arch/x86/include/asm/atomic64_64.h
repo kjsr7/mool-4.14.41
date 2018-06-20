@@ -178,9 +178,9 @@ static inline long atomic64_cmpxchg(atomic64_t *v, long old, long new)
 }
 
 #define atomic64_try_cmpxchg atomic64_try_cmpxchg
-static __always_inline bool atomic64_try_cmpxchg(atomic64_t *v, s64 *old, long new)
+static __always_inline bool atomic64_try_cmpxchg(atomic64_t *v, s64 *old, long new1)
 {
-	return try_cmpxchg(&v->counter, old, new);
+	return try_cmpxchg(&v->counter, old, new1);
 }
 
 static inline long atomic64_xchg(atomic64_t *v, long new)

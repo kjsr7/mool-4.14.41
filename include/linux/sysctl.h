@@ -117,9 +117,9 @@ struct ctl_table
 	int maxlen;
 	umode_t mode;
 	struct ctl_table *child;	/* Deprecated */
-#ifdef __cplusplus
-       ::
-#endif
+//#ifdef __cplusplus
+  //     ::
+//#endif
 
 	proc_handler *proc_handler;	/* Callback for text formatting */
 	struct ctl_table_poll *poll;
@@ -136,9 +136,9 @@ struct ctl_node {
    struct ctl_table trees. */
 struct ctl_table_header
 {
-#ifdef __cplusplus
-       ::
-#endif
+//#ifdef __cplusplus
+  //     ::
+//#endif
 	union {
 		struct {
 			struct ctl_table *ctl_table;
