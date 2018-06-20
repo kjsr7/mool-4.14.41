@@ -429,7 +429,8 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
-		   -fno-delete-null-pointer-checks -g
+	           -fno-delete-null-pointer-checks \
+	           -lstdc++ 
 KBUILD_CXXFLAGS := -g -fno-strict-aliasing -fno-common \
  		   -fpermissive -w -ffreestanding \
 		   -nostdinc -fno-strict-aliasing -fno-common \
@@ -439,7 +440,7 @@ KBUILD_CXXFLAGS := -g -fno-strict-aliasing -fno-common \
 		   -maccumulate-outgoing-args -fomit-frame-pointer \
 		   -fno-stack-protector -fno-tree-scev-cprop \
 		   -nostdinc++ -fexceptions -frtti -fno-strict-aliasing \
-                   -fno-common -fpermissive  -fno-tree-scev-cprop \
+                   -fno-common -fpermissive  -fno-tree-scev-cprop
 
 
 
@@ -756,7 +757,7 @@ else
 # These warnings generated too much noise in a regular build.
 # Use make W=1 to enable them (see scripts/Makefile.extrawarn)
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
-KBUILD_CFLAGS += $(call cc-disable-warning, unused-const-variable)
+KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
 endif
 KBUILD_CXXFLAGS += $(call cc-disable-warning, unused-but-set-variable)
 
@@ -789,7 +790,7 @@ KBUILD_AFLAGS	+= -gdwarf-2
 endif
 
 ifdef CONFIG_CXX_RUNTIME
-KBUILD_CXXFLAGS  += -Iinclude2 -I$(srctree)/include/c++ -I$(objtree)/include/c++ \
+KBUILD_CXXFLAGS  += -Iinclude1 -I$(srctree)/include/c++ -I$(objtree)/include/c++ \
 	-fexceptions -frtti -I$(srctree)/arch/$(hdr-arch)/include \
                 -I$(objtree)/arch/$(hdr-arch)/include/generated \
                 $(if $(KBUILD_SRC), -I$(srctree)/include) \
@@ -912,8 +913,7 @@ KBUILD_CPPFLAGS += $(ARCH_CPPFLAGS) $(KCPPFLAGS)
 KBUILD_AFLAGS   += $(ARCH_AFLAGS)   $(KAFLAGS)
 KBUILD_CFLAGS   += $(ARCH_CFLAGS)   $(KCFLAGS)
 CFLAGS = $(KBUILD_CFLAGS)
-
-#export CFLAGS
+export CFLAGS
 
 
 # Use --build-id when available.
@@ -1171,7 +1171,7 @@ ifneq ($(KBUILD_MODULES),)
 	$(Q)rm -f $(MODVERDIR)/*
 endif
 prepare-crt: prepare1 $(crtobjects) $(cxx_headers)
-archprepare: archheaders archscripts scripts_basic
+archprepare: archheaders archscripts prepare1 scripts_basic
 #prepare-crt in above line is moved to prepare
 
 
