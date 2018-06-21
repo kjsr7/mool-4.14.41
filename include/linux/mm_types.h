@@ -158,7 +158,7 @@ struct page {
 #endif
 		};
 
-#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && USE_SPLIT_PMD_PTLOCKS
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE && USE_SPLIT_PMD_PTLOCKS
 		struct {
 			unsigned long __pad;	/* do not overlay pmd_huge_pte
 						 * with compound_head to avoid
@@ -465,7 +465,7 @@ struct mm_struct {
 #ifdef CONFIG_MMU_NOTIFIER
 	struct mmu_notifier_mm *mmu_notifier_mm;
 #endif
-#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !USE_SPLIT_PMD_PTLOCKS
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE && !USE_SPLIT_PMD_PTLOCKS
 	pgtable_t pmd_huge_pte; /* protected by page_table_lock */
 #endif
 #ifdef CONFIG_CPUMASK_OFFSTACK
@@ -501,7 +501,7 @@ struct mm_struct {
 #endif
 	struct work_struct async_put_work;
 
-#if IS_ENABLED(CONFIG_HMM)
+#ifdef CONFIG_HMM
 	/* HMM needs to track a few things per mm */
 	struct hmm *hmm;
 #endif

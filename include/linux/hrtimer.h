@@ -316,7 +316,11 @@ __hrtimer_expires_remaining_adjusted(const struct hrtimer *timer, ktime_t now)
 	 * Adjust relative timers for the extra we added in
 	 * hrtimer_start_range_ns() to prevent short timeouts.
 	 */
-	if (IS_ENABLED(CONFIG_TIME_LOW_RES) && timer->is_rel)
+int a;
+#ifdef CONFIG_TIME_LOW_RES
+a = 1;
+#endif
+	if (a && timer->is_rel)
 		rem -= hrtimer_resolution;
 	return rem;
 }

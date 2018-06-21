@@ -79,13 +79,21 @@ void synchronize_rcu(void);
 
 static inline void __rcu_read_lock(void)
 {
-	if (IS_ENABLED(CONFIG_PREEMPT_COUNT))
+int a;
+#ifdef CONFIG_PREEMPT_COUNT
+a = 1;
+#endif
+	if (a)
 		preempt_disable();
 }
 
 static inline void __rcu_read_unlock(void)
 {
-	if (IS_ENABLED(CONFIG_PREEMPT_COUNT))
+int a;
+#ifdef CONFIG_PREEMPT_COUNT
+a = 1;
+#endif
+        if (a)
 		preempt_enable();
 }
 

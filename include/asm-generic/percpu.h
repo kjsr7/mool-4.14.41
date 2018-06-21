@@ -120,7 +120,7 @@ do {									\
 ({									\
 	typeof(pcp) __ret;						\
 	preempt_disable_notrace();					\
-	__ret = READ_ONCE(*raw_cpu_ptr(&(pcp)));			\
+	__ret = *raw_cpu_ptr(&(pcp));			\
 	preempt_enable_notrace();					\
 	__ret;								\
 })

@@ -301,9 +301,16 @@ do {									\
  */
 static inline int mmap_is_ia32(void)
 {
-	return IS_ENABLED(CONFIG_X86_32) ||
+/*0int a;
+#ifdef CONFIG_X86_32
+a = 1;
+#endif
+
+f
+	return a ||
 	       (IS_ENABLED(CONFIG_COMPAT) &&
-		test_thread_flag(TIF_ADDR32));
+		test_thread_flag(TIF_ADDR32));*/
+return 1;
 }
 
 extern unsigned long task_size_32bit(void);

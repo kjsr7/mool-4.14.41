@@ -153,7 +153,13 @@ static inline void queued_read_unlock(struct qrwlock *lock)
  */
 static inline u8 *__qrwlock_write_byte(struct qrwlock *lock)
 {
-	return (u8 *)lock + 3 * IS_BUILTIN(CONFIG_CPU_BIG_ENDIAN);
+int a = 0;
+#ifdef CONFIG_CPU_BIG_ENDIAN
+a = 1;
+#endif
+
+
+	return (u8 *)lock + 3 * a;
 }
 
 /**
