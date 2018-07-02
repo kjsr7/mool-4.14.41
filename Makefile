@@ -376,7 +376,7 @@ endif
 
 # Make variables (CC, etc...)
 AS		= $(CROSS_COMPILE)as
-LD		= $(CROSS_COMPILE)ld  -nostdlib -nodefaultlibs -nostartfiles
+LD		= $(CROSS_COMPILE)ld  -nostdlib 
 CC		= $(CROSS_COMPILE)gcc
 CXX		= $(CROSS_COMPILE)g++ $(KBUILD_CFLAGS) $(KBUILD_CXXFLAGS) -v
 CPP		= $(CC) -E
@@ -913,7 +913,7 @@ KBUILD_CPPFLAGS += $(ARCH_CPPFLAGS) $(KCPPFLAGS)
 KBUILD_AFLAGS   += $(ARCH_AFLAGS)   $(KAFLAGS)
 KBUILD_CFLAGS   += $(ARCH_CFLAGS)   $(KCFLAGS)
 CFLAGS = $(KBUILD_CFLAGS)
-export CFLAGS
+#export CFLAGS
 
 
 # Use --build-id when available.
